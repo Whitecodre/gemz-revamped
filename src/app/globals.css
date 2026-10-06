@@ -10,13 +10,21 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Brand */
+  --color-brand: #009588;
+  --color-brand-dark: #00776e;
+  --color-brand-light: #00d294;
+
+  /* Soft tints for calm sections */
+  --color-brand-tint: #ecfdf5;
+  --color-page: #fafbfc;
+
+  /* Dark green sections (use sparingly) */
+  --color-forest-start: #0a1f16;
+  --color-forest-end: #07140e;
+  --color-forest-surface: #10231b;
+  --color-forest-deep: #020b08;
 }
 
 body {
