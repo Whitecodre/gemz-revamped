@@ -15,6 +15,21 @@
 - Collapse the old site's many similar greens into two roles: teal = brand,
   green-to-emerald gradient = highlight.
 
+## Signature identity: "Facets" (decided 2026-10-12)
+The Gemz name gives the visual idea: a gem is flat planes that catch the light.
+Repeat it, calmly, everywhere:
+- **Gem illustration** (`GemVisual`) as the hero and closing-section mark.
+- **Facets backdrop** (`Facets`, `backdrop="facets"`): large translucent planes
+  that drift at different speeds on scroll.
+- **Cut edges** (`Section edgeTo`): sections meet on a diagonal that reveals the
+  next section's tone; alternate with `flip` so it zig-zags.
+- **Gem-cut shapes**: octagonal icon boxes, cards with chamfered corners and a
+  flat facet plane (`GemFrame`, `facet` prop),
+  diamond eyebrow markers, chamfered swatches.
+- **Varied composition**: bento grids, split layouts and big numbers, not the
+  same eyebrow + heading + card grid in every section.
+Keep it subtle: facets are low-opacity and decorative, never competing with copy.
+
 ## Palette extracted from the current site
 
 Extracted from https://gemzsoftware.com/ (its compiled Tailwind CSS and HTML) on 2026-10-06.
