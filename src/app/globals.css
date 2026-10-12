@@ -1,34 +1,248 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ==========================================================================
+   1. Palette: raw colour scales, all derived from the original Gemz site.
+      Brand = the site's teal (600 = #009588), accent = its emerald/green
+      gradient, forest = its four dark greens extended into a full scale.
+      Components should rarely use these directly; they use the semantic
+      tokens in section 2 so they adapt to light, tint and dark sections.
+   ========================================================================== */
+@theme {
+  --color-brand-50: #effcf9;
+  --color-brand-100: #cdf7ee;
+  --color-brand-200: #9ceedd;
+  --color-brand-300: #5fdcc6;
+  --color-brand-400: #22c2ac;
+  --color-brand-500: #00a896;
+  --color-brand-600: #009588;
+  --color-brand-700: #00776e;
+  --color-brand-800: #005f59;
+  --color-brand-900: #054e4a;
+  --color-brand-950: #012e2c;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-accent-300: #5ee9b5;
+  --color-accent-400: #00d294;
+  --color-accent-500: #00bb7f;
+  --color-glow-400: #05df72;
 
-  /* Brand */
+  --color-forest-50: #e8f0ec;
+  --color-forest-200: #a9c2b6;
+  --color-forest-400: #5d7f70;
+  --color-forest-600: #22473a;
+  --color-forest-700: #183429;
+  --color-forest-800: #10231b;
+  --color-forest-850: #0a1f16;
+  --color-forest-900: #07140e;
+  --color-forest-950: #020b08;
+
+  /* Short aliases for the two brand colours used most. */
   --color-brand: #009588;
   --color-brand-dark: #00776e;
-  --color-brand-light: #00d294;
 
-  /* Soft tints for calm sections */
-  --color-brand-tint: #ecfdf5;
-  --color-page: #fafbfc;
+  /* Motion: CSS keyframe animations, used as `animate-marquee` etc. */
+  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-glint: glint 5s ease-in-out infinite;
+  --animate-facet-in: facet-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 
-  /* Dark green sections (use sparingly) */
-  --color-forest-start: #0a1f16;
-  --color-forest-end: #07140e;
-  --color-forest-surface: #10231b;
-  --color-forest-deep: #020b08;
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* A facet settling into place when the gem first appears. */
+  @keyframes facet-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* A facet catching the light: fades up and back down. */
+  @keyframes glint {
+    0%,
+    100% {
+      opacity: 0.08;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ==========================================================================
+   2. Semantic tokens: the colours change with the section's tone.
+      `@theme inline` registers them as utilities (bg-surface, text-ink...)
+      that read a CSS variable, so redefining the variable under
+      [data-tone="dark"] restyles every component inside that section.
+   ========================================================================== */
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-ink: var(--ink);
+  --color-ink-body: var(--ink-body);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger-ink: var(--danger-ink);
+  --color-danger-soft: var(--danger-soft);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* Light (default): calm off-white page, white cards. */
+:root,
+[data-tone="light"] {
+  --surface: #fafbfc;
+  --surface-raised: #ffffff;
+  --surface-sunken: #f1f5f9;
+  --ink: #0f172b;
+  --ink-body: #314158;
+  --ink-muted: #5b6577;
+  --line: #e2e8f0;
+  --line-strong: #cad5e2;
+  --accent: #009588;
+  --accent-ink: #00776e;
+  --accent-soft: #e6f8f4;
+  --danger-ink: #9f0712;
+  --danger-soft: #fef2f2;
+  --glow: rgb(0 149 136 / 0.14);
+  --gradient-from: #00776e;
+  --gradient-to: #00a86b;
+}
+
+/* Tint: a soft brand-tinted section for rhythm between light sections. */
+[data-tone="tint"] {
+  --surface: #effcf9;
+  --surface-raised: #ffffff;
+  --surface-sunken: #e0f5ef;
+  --ink: #0f172b;
+  --ink-body: #2c4250;
+  --ink-muted: #4f6470;
+  --line: #cfeee5;
+  --line-strong: #a6e0d0;
+  --accent: #009588;
+  --accent-ink: #00776e;
+  --accent-soft: #d4f4eb;
+  --danger-ink: #9f0712;
+  --danger-soft: #fef2f2;
+  --glow: rgb(0 149 136 / 0.18);
+  --gradient-from: #00776e;
+  --gradient-to: #00a86b;
+}
+
+/* Dark: the Gemz forest greens. Use for the hero and key moments. */
+[data-tone="dark"] {
+  --surface: #07140e;
+  --surface-raised: #10231b;
+  --surface-sunken: #020b08;
+  --ink: #f2fbf7;
+  --ink-body: #c3d8ce;
+  --ink-muted: #8eaa9d;
+  --line: #1c3a2e;
+  --line-strong: #2a4d3e;
+  --accent: #00d294;
+  --accent-ink: #5ee9b5;
+  --accent-soft: #0f2e22;
+  --danger-ink: #ffa2a2;
+  --danger-soft: #3a1216;
+  --glow: rgb(0 210 148 / 0.2);
+  --gradient-from: #5ee9b5;
+  --gradient-to: #00d294;
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   3. Custom utilities
+   ========================================================================== */
+
+/* The gem cut: two opposite corners chamfered at 45 degrees. The size is a
+   variable, so a component can change it: className="[--cut:40px]". */
+@utility clip-gem {
+  --cut: 26px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% 100%,
+    var(--cut) 100%,
+    0 calc(100% - var(--cut))
+  );
+}
+
+/* A faint technical grid, drawn in the section's own line colour. */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* Gradient text that adapts to the tone (deep teal on light, bright on dark). */
+@utility text-gradient {
+  background-image: linear-gradient(100deg, var(--gradient-from), var(--gradient-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ==========================================================================
+   4. Base
+   ========================================================================== */
+@layer base {
+  html {
+    /* Anchor links stop below the sticky navbar instead of under it. */
+    scroll-padding-top: 5rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background: var(--surface);
+    color: var(--ink-body);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: #5fdcc6;
+    color: #012e2c;
+  }
+
+  /* Pause looping decoration for people who ask their OS for less motion. */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee,
+    .animate-float,
+    .animate-glint,
+    .animate-facet-in {
+      animation: none;
+    }
+  }
 }
