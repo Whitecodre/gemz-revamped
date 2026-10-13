@@ -9,6 +9,7 @@ import { Testimonials } from "@/components/sections/testimonials";
 import { Work } from "@/components/sections/work";
 import { Navbar } from "@/components/ui/navbar";
 import { ScrollToTop } from "@/components/ui/scroll-to-top";
+import { SmoothAnchors } from "@/components/ui/smooth-anchors";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, SUPPORT_EMAIL } from "@/lib/site";
 import { getTestimonials } from "@/lib/testimonials";
 
@@ -60,6 +61,7 @@ export default function Home() {
       </main>
       <Footer />
       <ScrollToTop />
+      <SmoothAnchors />
     </>
   );
 }

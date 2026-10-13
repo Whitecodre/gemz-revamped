@@ -78,8 +78,8 @@ export function Button({
     // In-page anchors ("#contact") use a plain <a>, not Next's <Link>. Link sends
     // them through the router, which can skip the scroll when the URL already
     // ends in that hash (click, scroll away, click again: nothing happens). The
-    // browser's own anchor handling scrolls every time and follows our CSS
-    // scroll-behavior and scroll-padding.
+    // browser's own anchor handling scrolls every time. SmoothAnchors adds the
+    // glide, and the CSS scroll-padding sets the gap above the section.
     if (typeof rest.href === "string" && rest.href.startsWith("#")) {
       return (
         <a
