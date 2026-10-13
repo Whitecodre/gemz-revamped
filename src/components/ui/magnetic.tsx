@@ -2,7 +2,8 @@
 
 // Client Component: it reacts to the pointer, a browser-only event.
 
-import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import { useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import * as m from "motion/react-m";
 import type { PointerEvent, ReactNode } from "react";
 
 import { spring } from "@/lib/motion";
@@ -34,13 +35,13 @@ export function Magnetic({ children, className, strength = 0.25 }: MagneticProps
   }
 
   return (
-    <motion.div
+    <m.div
       className={className ?? "inline-block"}
       onPointerMove={handleMove}
       onPointerLeave={reset}
       style={{ x, y }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

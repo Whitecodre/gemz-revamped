@@ -3,7 +3,8 @@
 // Client Component: it follows the mouse, which needs event handlers
 // (onMouseMove) and motion values that update in the browser.
 
-import { motion, useMotionTemplate, useMotionValue } from "motion/react";
+import { useMotionTemplate, useMotionValue } from "motion/react";
+import * as m from "motion/react-m";
 import type { MouseEvent, ReactNode } from "react";
 
 import { GemFrame } from "./gem-frame";
@@ -31,7 +32,7 @@ export function SpotlightCard({ children, className }: SpotlightCardProps) {
 
   return (
     <GemFrame onMouseMove={handleMouseMove} className={className}>
-      <motion.div
+      <m.div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 group-hover/gem:opacity-100"
         style={{ background }}

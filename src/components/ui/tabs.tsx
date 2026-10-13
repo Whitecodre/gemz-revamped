@@ -3,7 +3,8 @@
 // Client Component: which tab is selected is state (useState), and the
 // keyboard handling and animated indicator run in the browser.
 
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
 import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 
 import { cn } from "@/lib/cn";
@@ -76,7 +77,7 @@ export function Tabs({ items, className }: TabsProps) {
             >
               {/* layoutId: Motion slides this pill from the old tab to the new one. */}
               {selected && (
-                <motion.span
+                <m.span
                   layoutId={`${baseId}-pill`}
                   transition={spring.snappy}
                   className="absolute inset-0 rounded-full border border-line bg-surface-raised shadow-sm"
@@ -92,7 +93,7 @@ export function Tabs({ items, className }: TabsProps) {
       </div>
 
       <AnimatePresence mode="wait" initial={false}>
-        <motion.div
+        <m.div
           key={active.id}
           role="tabpanel"
           id={`${baseId}-panel-${active.id}`}
@@ -105,7 +106,7 @@ export function Tabs({ items, className }: TabsProps) {
           className="mt-8 focus-visible:outline-none"
         >
           {active.content}
-        </motion.div>
+        </m.div>
       </AnimatePresence>
     </div>
   );

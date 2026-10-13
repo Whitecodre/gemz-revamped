@@ -1,13 +1,9 @@
-"use client";
-
-// Client Component: the facets drift at different speeds as you scroll, so the
-// "light" across the gem planes appears to shift. Scroll position is a
-// browser-only value, which is why this needs "use client".
-
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
-
 import { cn } from "@/lib/cn";
+
+// A Server Component, no JavaScript: the facets drift at different speeds as you
+// scroll, so the "light" across the gem planes appears to shift. The drift is a CSS
+// scroll-driven animation (.drift-back and .drift-front in globals.css). It used to
+// be JavaScript reading the scroll position in every section that has a backdrop.
 
 type FacetsProps = {
   // "b" is a mirror image of "a", so neighbouring sections don't look identical.
@@ -30,14 +26,13 @@ const front: Shape[] = [
   { points: "640,300 1200,260 1200,700 520,700", opacity: 0.09 },
 ];
 
-function Layer({ shapes, y }: { shapes: Shape[]; y: ReturnType<typeof useTransform<number, number>> | 0 }) {
+function Layer({ shapes, speed }: { shapes: Shape[]; speed: "drift-back" | "drift-front" }) {
   return (
-    <motion.svg
+    <svg
       aria-hidden="true"
       viewBox="0 0 1200 700"
       preserveAspectRatio="xMidYMin slice"
-      className="absolute inset-x-0 -top-[10%] h-[120%] w-full"
-      style={{ y }}
+      className={cn("absolute inset-x-0 -top-[10%] h-[120%] w-full", speed)}
     >
       {shapes.map((shape) => (
         <polygon
@@ -50,24 +45,13 @@ function Layer({ shapes, y }: { shapes: Shape[]; y: ReturnType<typeof useTransfo
           vectorEffect="non-scaling-stroke"
         />
       ))}
-    </motion.svg>
+    </svg>
   );
 }
 
 export function Facets({ variant = "a", className }: FacetsProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
-  // progress goes 0 -> 1 as the section travels from entering to leaving the screen.
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const backY = useTransform(scrollYProgress, [0, 1], [40, -40]);
-  const frontY = useTransform(scrollYProgress, [0, 1], [90, -90]);
-
   return (
     <div
-      ref={ref}
       aria-hidden="true"
       className={cn(
         "pointer-events-none absolute inset-0 -z-10 overflow-hidden [mask-image:linear-gradient(to_bottom,black_30%,transparent)]",
@@ -75,8 +59,8 @@ export function Facets({ variant = "a", className }: FacetsProps) {
         className,
       )}
     >
-      <Layer shapes={back} y={reduceMotion ? 0 : backY} />
-      <Layer shapes={front} y={reduceMotion ? 0 : frontY} />
+      <Layer shapes={back} speed="drift-back" />
+      <Layer shapes={front} speed="drift-front" />
     </div>
   );
 }

@@ -3,12 +3,12 @@
 // Client Component: it reads the pointer position, a browser-only event.
 
 import {
-  motion,
   useMotionValue,
   useReducedMotion,
   useSpring,
   useTransform,
 } from "motion/react";
+import * as m from "motion/react-m";
 import type { PointerEvent, ReactNode } from "react";
 
 import { spring } from "@/lib/motion";
@@ -47,13 +47,13 @@ export function Tilt({ children, className, max = 10 }: TiltProps) {
   }
 
   return (
-    <motion.div
+    <m.div
       className={className}
       onPointerMove={handleMove}
       onPointerLeave={reset}
       style={{ rotateX, rotateY, transformPerspective: 900 }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

@@ -3,7 +3,8 @@
 // Client Component: which item is open is state, and the height animation
 // runs in the browser.
 
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
 import { Plus } from "lucide-react";
 import { useId, useState, type ReactNode } from "react";
 
@@ -56,7 +57,7 @@ export function Accordion({ items, className }: AccordionProps) {
             </h3>
             <AnimatePresence initial={false}>
               {open && (
-                <motion.div
+                <m.div
                   id={panelId}
                   role="region"
                   aria-labelledby={buttonId}
@@ -70,7 +71,7 @@ export function Accordion({ items, className }: AccordionProps) {
                   <div className="px-5 pb-5 leading-7 text-ink-body sm:px-6">
                     {item.answer}
                   </div>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
           </div>

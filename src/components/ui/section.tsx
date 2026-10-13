@@ -54,7 +54,10 @@ export function Section({
       )}
       {showFacets && <Facets variant={flip ? "b" : "a"} />}
 
-      <Container className={cn("py-20 sm:py-28", edgeTo && "pb-28 sm:pb-40", containerClassName)}>
+      {/* Padding is kept modest so a section's content fits within one viewport.
+          With an edge cut, the bottom padding stays larger than the cut's height
+          (3rem on phones, 5rem from sm) so content never touches the diagonal. */}
+      <Container className={cn("py-14 sm:py-20", edgeTo && "pb-20 sm:pb-28", containerClassName)}>
         {children}
       </Container>
 

@@ -19,10 +19,13 @@ const facets: { points: string; opacity: number }[] = [
   { points: "130,70 180,70 100,170", opacity: 0.3 }, // pavilion right
 ];
 
+// The glints repeat forever and each frame repaints the whole gem (filter and glow
+// included), which is costly while the page is still loading. They therefore start
+// after 6 s, once the page has settled, and then stay staggered.
 const glints = [
-  { points: "60,30 140,30 130,70 70,70", delay: "0s" },
-  { points: "70,70 100,70 100,170", delay: "1.6s" },
-  { points: "140,30 180,70 130,70", delay: "3.1s" },
+  { points: "60,30 140,30 130,70 70,70", delay: "6s" },
+  { points: "70,70 100,70 100,170", delay: "7.6s" },
+  { points: "140,30 180,70 130,70", delay: "9.1s" },
 ];
 
 export function GemVisual({ className }: GemVisualProps) {

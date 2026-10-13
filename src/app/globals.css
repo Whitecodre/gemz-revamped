@@ -44,6 +44,30 @@
   --animate-float: float 6s ease-in-out infinite;
   --animate-glint: glint 5s ease-in-out infinite;
   --animate-facet-in: facet-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  /* Entrance for the first screen. Pure CSS, so it starts on the very first paint
+     instead of waiting for JavaScript to load (which delays the largest content). */
+  --animate-rise: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  --animate-word-rise: word-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes word-rise {
+    from {
+      transform: translateY(110%);
+    }
+    to {
+      transform: none;
+    }
+  }
 
   @keyframes marquee {
     from {
@@ -214,8 +238,10 @@
    ========================================================================== */
 @layer base {
   html {
-    /* Anchor links stop below the sticky navbar instead of under it. */
-    scroll-padding-top: 5rem;
+    /* Anchor links land with a small gap above the section. The section's own top
+       padding (3.5rem on phones, 5rem from sm) is what clears the floating navbar,
+       so a large offset here would only add empty space. */
+    scroll-padding-top: 2rem;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -241,8 +267,95 @@
     .animate-marquee,
     .animate-float,
     .animate-glint,
-    .animate-facet-in {
+    .animate-facet-in,
+    .animate-rise,
+    .animate-word-rise {
       animation: none;
     }
+  }
+}
+
+/* ==========================================================================
+   5. Scroll-driven effects (CSS only, no JavaScript)
+      `animation-timeline: view()` ties an animation to how far the element has
+      scrolled through the screen. It replaces dozens of JavaScript-animated
+      wrappers, which kept the page's main thread busy while it loaded.
+      Everything is inside @supports: a browser that doesn't know it just shows
+      the content normally, with no animation and nothing hidden.
+   ========================================================================== */
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The facet planes drift at different speeds: the back layer slowly, the front
+   layer faster. That difference is the parallax. */
+@keyframes drift-back {
+  from {
+    transform: translateY(40px);
+  }
+  to {
+    transform: translateY(-40px);
+  }
+}
+
+@keyframes drift-front {
+  from {
+    transform: translateY(90px);
+  }
+  to {
+    transform: translateY(-90px);
+  }
+}
+
+@keyframes draw-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  /* `backwards`: the element is hidden before its range and shows normally after
+     it, so nothing is left applied once the effect has played. */
+  .reveal {
+    animation: reveal-rise linear backwards;
+    animation-timeline: view();
+    animation-range: entry 0% entry 45%;
+  }
+
+  .drift-back {
+    animation: drift-back linear both;
+    animation-timeline: view();
+    animation-range: cover;
+  }
+
+  .drift-front {
+    animation: drift-front linear both;
+    animation-timeline: view();
+    animation-range: cover;
+  }
+
+  .draw-x {
+    animation: draw-x linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 90%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .drift-back,
+  .drift-front,
+  .draw-x {
+    animation: none;
   }
 }

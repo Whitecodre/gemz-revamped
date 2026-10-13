@@ -1,21 +1,17 @@
-"use client";
-
-import { motion } from "motion/react";
-
 import { cn } from "@/lib/cn";
-import { ease } from "@/lib/motion";
 
-// A thin line that draws itself left to right when it scrolls into view.
-// It animates scaleX (a cheap transform), anchored on the left with origin-left.
+// A thin line that draws itself left to right as it scrolls into view. A Server
+// Component: the drawing is a CSS scroll-driven animation (.draw-x in globals.css),
+// and origin-left anchors the scaling on the left edge. Where that CSS isn't
+// supported, the line is simply shown fully drawn.
 export function DrawLine({ className }: { className?: string }) {
   return (
-    <motion.div
+    <div
       aria-hidden="true"
-      className={cn("h-px origin-left bg-linear-to-r from-accent via-line-strong to-transparent", className)}
-      initial={{ scaleX: 0 }}
-      whileInView={{ scaleX: 1 }}
-      viewport={{ once: true, amount: 1 }}
-      transition={{ duration: 1.4, ease }}
+      className={cn(
+        "draw-x h-px origin-left bg-linear-to-r from-accent via-line-strong to-transparent",
+        className,
+      )}
     />
   );
 }

@@ -75,6 +75,24 @@ export function Button({
 
   // Checking `href` narrows `rest`: inside this block TypeScript knows it holds Link props.
   if (rest.href !== undefined) {
+    // In-page anchors ("#contact") use a plain <a>, not Next's <Link>. Link sends
+    // them through the router, which can skip the scroll when the URL already
+    // ends in that hash (click, scroll away, click again: nothing happens). The
+    // browser's own anchor handling scrolls every time and follows our CSS
+    // scroll-behavior and scroll-padding.
+    if (typeof rest.href === "string" && rest.href.startsWith("#")) {
+      return (
+        <a
+          className={classes}
+          href={rest.href}
+          onClick={rest.onClick}
+          aria-label={rest["aria-label"]}
+        >
+          {children}
+          {arrowIcon}
+        </a>
+      );
+    }
     return (
       <Link className={classes} {...rest}>
         {children}

@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
+import { type Variants } from "motion/react";
+import * as m from "motion/react-m";
 
 import { ease } from "@/lib/motion";
 
@@ -29,7 +30,7 @@ export function RevealWords({ text, className, delay = 0 }: RevealWordsProps) {
   return (
     <>
       <span className="sr-only">{text}</span>
-      <motion.span
+      <m.span
         aria-hidden="true"
         className={className}
         variants={container(delay)}
@@ -41,13 +42,13 @@ export function RevealWords({ text, className, delay = 0 }: RevealWordsProps) {
           // The negative margin cancels the padding so line spacing is unchanged;
           // the padding stops the mask from clipping descenders (g, y, p).
           <span key={index} className="inline-block overflow-hidden pb-[0.15em] -mb-[0.15em] align-bottom">
-            <motion.span className="inline-block" variants={word}>
+            <m.span className="inline-block" variants={word}>
               {item}
               {" "}
-            </motion.span>
+            </m.span>
           </span>
         ))}
-      </motion.span>
+      </m.span>
     </>
   );
 }
