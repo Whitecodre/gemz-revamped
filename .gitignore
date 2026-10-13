@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# lighthouse reports (kept local, not part of the repo)
+/docs/*.pdf
+/docs/*.json

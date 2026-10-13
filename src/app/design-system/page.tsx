@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import {
   Activity,
   Cloud,
@@ -38,7 +39,9 @@ import { Tabs } from "@/components/ui/tabs";
 import { Testimonial } from "@/components/ui/testimonial";
 import { Tilt } from "@/components/ui/tilt";
 
-// An internal reference page, so keep it out of search engines.
+// An internal reference page. It is only for development: in a production build
+// the page answers with a 404 (see DesignSystemPage below). The noindex stays as
+// a second layer in case it is ever exposed by mistake.
 export const metadata: Metadata = {
   title: "Design system",
   robots: { index: false, follow: false },
@@ -68,6 +71,11 @@ const tones: Tone[] = ["light", "tint", "dark"];
 // Each section sets `edgeTo` to the tone of the section below it: that draws the
 // diagonal gem-cut between them. `flip` alternates the slope so it zig-zags.
 export default function DesignSystemPage() {
+  // NODE_ENV is "production" in `npm run build` / `npm start` (and on a host like
+  // Vercel) and "development" in `npm run dev`. notFound() throws, so nothing
+  // below runs and the visitor gets the normal 404 page.
+  if (process.env.NODE_ENV === "production") notFound();
+
   return (
     <>
       <ScrollProgress />
